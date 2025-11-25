@@ -1,25 +1,7 @@
-#! /usr/bin/env python3
-
-#Fase 1: welcome -> suscriber de info user con topic user_information y print the info
-#Fase 2: game -> control del juego, flechitas, 
-#               suscriber de node control_node 
-#               topic keyboard_control
-#               mensaje std_msgs/String -> Right, left, up, down ALL CAPITAL LETTERS, usamos space
-#Fase 3: final -> final score
-#                 publisher result_game
-#                 topic result_information
-#                 mensaje std_msgs/int64
-
-
-import rospy
-import time
 import pygame
 import sys
 import random
 from enum import Enum
-from std_msgs.msg import Int64
-from std_msgs.msg import String
-from flappy_info_msgs.msg import user_msg  #-> msg_type
 
 # Initialize Pygame
 pygame.init()
@@ -47,8 +29,6 @@ class GameState(Enum):
     START_SCREEN = 0
     PLAYING = 1
     GAME_OVER = 2
-
-#this is pygame
 
 class Bird:
     def __init__(self):
@@ -167,7 +147,6 @@ class FlappyBirdGame:
         self.pipe_timer = 0
         self.pipe_spawn_delay = 90  # frames between pipes
         
-    """
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -188,8 +167,6 @@ class FlappyBirdGame:
                 elif self.game_state == GameState.PLAYING:
                     self.bird.jump()
         return True
-
-    """
     
     def start_game(self):
         self.game_state = GameState.PLAYING
@@ -371,7 +348,7 @@ class FlappyBirdGame:
             self.screen.blit(restart_text, restart_rect)
         
         pygame.display.flip()
-    """
+    
     def run(self):
         running = True
         while running:
@@ -382,111 +359,8 @@ class FlappyBirdGame:
         
         pygame.quit()
         sys.exit()
-    """
-
-
-#ROS starts
-class Game(object):
-    def __init__(self):
-        #for phase 1: 
-        self.name = "None"
-        self.username = "None"
-        self.age = 0
-        self.__sub_user = rospy.Subscriber("user_information", user_msg, self.callback_user)
-        #for phase 2: 
-        self.jump_requested = False
-        self.__sub_control = rospy.Subscriber("keyboard_control", String, self.callback_control)
-        #for phase 3: 
-        self.__pub_result = rospy.Publisher("result_information", Int64, queue_size=10)
-        self.result_published = False
-                
-        rospy.loginfo("Starting the game")
-        time.sleep(5)
-        #self.main()
-
-        #create instance to game
-        self.game = FlappyBirdGame()
-
-
-    def callback_user(self, msg):
-        self.name = msg.name
-        self.username= msg.username
-        self.age = msg.age
-        rospy.loginfo("Received message")
-        rospy.loginfo("Name: %s", msg.name)
-        rospy.loginfo("Username: %s", msg.username)
-        rospy.loginfo("Age: %s", msg.age)
-
-    def callback_control(self, msg):
-        rospy.loginfo("Received message")
-        rospy.loginfo("Key Pressed: %s", msg.data)
-        #1st press -> to start game
-        if msg.data == "SPACE":
-            self.jump_requested = True
-
-    def main(self):
-        rate = rospy.Rate(60)
-        running = True
-        rospy.loginfo("We start the game ros and pygame")
-
-        while not rospy.is_shutdown() and running:
-            # Eventos de Pygame (cerrar ventana)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    rospy.loginfo("Ventana cerrada, saliendo...")
-                    running = False
-
-            #phase 2
-            if self.jump_requested:
-                if self.game.game_state == GameState.START_SCREEN:
-                    rospy.loginfo("[FASE 2] %s inicia la partida", self.username)
-                    self.game.start_game()
-                    self.result_published = False
-
-                elif self.game.game_state == GameState.PLAYING:
-                    rospy.loginfo("[FASE 2] %s hace jump", self.username)
-                    self.game.bird.jump()
-
-                elif self.game.game_state == GameState.GAME_OVER:
-                    rospy.loginfo("[FASE 2] %s reinicia la partida", self.username)
-                    self.game.restart_game()
-                    self.result_published = False
-
-                self.jump_requested = False
-
-            prev_state = self.game.game_state
-            self.game.update()
-            self.game.draw()
-            self.game.clock.tick(60)
-
-            #phase3
-            if (prev_state == GameState.PLAYING and
-            self.game.game_state == GameState.GAME_OVER and
-            not self.result_published):
-
-                score_msg = Int64()
-                score_msg.data = self.game.score
-                self.__pub_result.publish(score_msg)
-                rospy.loginfo("[FASE 3] Publicando score final de %s: %d",
-                                self.username, self.game.score)
-                self.result_published = True
-
-            
-        
-            rate.sleep()
-
-        pygame.quit()
-
-    
 
 if __name__ == "__main__":
-    try:
-        rospy.init_node("game_node")#preguntar que poner aqui
-        rospy.loginfo("Node game has started")
-        node = Game()
-        #rospy.spin()
-        node.main()
-    except rospy.ROSInterruptException:
-        pass
-
+    game = FlappyBirdGame()
+    game.run()
 

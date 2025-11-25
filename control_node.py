@@ -19,21 +19,50 @@ class ControlNodePub(object):
         self.main()
     
     def get_key(self):
-        #como lo hacemos
+        tty.setraw(sys.stdin.fileno())
+        rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
+        key = ''
+
+        if rlist:
+            key = sys.stdin.read(1)
+
+        # Restaurar configuración del terminal
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+        return key
 
     def main(self):
-        key = 
+        rospy.loginfo("Keyboard control started. Press space to jump")
+        rate=rospy.Rate(20)
+        
+        while not rospy.is_shutdown():
+            key = self.get_key()
+
+            # if CTRL+C is pressed, salimos del bucle
+            if key == '\x03':
+                rospy.loginfo("CTRL+C detected, exiting keyboard control loop.")
+                break
+
+            # Si se pulsa SPACE, publicamos en el topic
+            if key == ' ':
+                msg = String()
+                msg.data = "SPACE"   # TODO: si más adelante hay más controles, cambiar aquí
+                self.__pub.publish(msg)
+                rospy.loginfo("Published key: %s", msg.data)
+
+            rate.sleep()
         
         rospy.sleep(5)
-        self.__pub.publish("Hello control node from the publisher")
-        self.__pub.publish(key)
+       
         
 if __name__ == "__main__":
     try:
-        rospy.init_node("publisher_robot")
+        rospy.init_node("control_node")
         #print("Node has started")
         rospy.loginfo("Node Publisher Keyboard Control Node has started")
         user = ControlNodePub()
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
+    finally:
+        # Restaurar siempre el terminal por si acaso
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)

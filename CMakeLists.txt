@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(RP_Cristino_Garcia_Sanchez_25)
+project(rp_Cristino_Garcia_Sanchez_25)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -10,6 +10,7 @@ project(RP_Cristino_Garcia_Sanchez_25)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  flappy_info_msgs
 )
 
 ## System dependencies are found with CMake's conventions
