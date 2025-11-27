@@ -1,0 +1,9 @@
+# SetGameDifficulty.srv
+# Request:
+#   level puede ser "easy", "medium" o "hard"
+string level
+---
+# Response:
+#   success = true  -> si el juego estaba en fase 1 (pantalla inicio) y se cambió
+#   success = false -> si NO estaba en fase 1 y no se cambió
+bool success

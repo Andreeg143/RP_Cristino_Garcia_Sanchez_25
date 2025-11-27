@@ -1,0 +1,6 @@
+# GetUserScore.srv
+# Request: nombre de usuario
+string username
+---
+# Response: porcentaje de score (0–100)
+float32 percentage

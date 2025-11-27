@@ -49,6 +49,14 @@ class ControlNodePub(object):
                 self.__pub.publish(msg)
                 rospy.loginfo("Published key: %s", msg.data)
 
+            # R -> reset completo a fase 1
+            elif key in ('r', 'R'):
+                msg = String()
+                msg.data = "R"
+                self.__pub.publish(msg)
+                rospy.loginfo("Published key: %s (reset to phase 1)", msg.data)
+
+
             rate.sleep()
         
         rospy.sleep(5)

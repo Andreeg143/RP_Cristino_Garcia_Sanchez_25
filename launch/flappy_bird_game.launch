@@ -1,0 +1,35 @@
+<launch>
+    <!-- ===== PARÁMETROS GLOBALES (los que usas en game_node) ===== -->
+    <!-- Estos se crean como /user_name, /change_player_color, /screen_param -->
+    <param name="/user_name" value="default_user" />
+    <param name="/change_player_color" value="2" />  <!-- 1=RED, 2=PURPLE, 3=BLUE -->
+    <param name="/screen_param" value="phase1" />
+
+    <!-- ===== NODO PRINCIPAL DEL JUEGO (ROS + Pygame + services + params) ===== -->
+    <node name="game_node"
+          pkg="rp_Cristino_Garcia_Sanchez_25"
+          type="game_node.py"
+          output="screen" />
+
+    <!-- ===== NODO INFO_USER (interactivo, con su propia terminal xterm) ===== -->
+    <node name="info_user"
+          pkg="rp_Cristino_Garcia_Sanchez_25"
+          type="info_user.py"
+          launch-prefix="xterm -e"
+          output="screen" />
+
+    <!-- ===== NODO CONTROL POR TECLADO (SPACE y R) ===== -->
+    <node name="control_node"
+          pkg="rp_Cristino_Garcia_Sanchez_25"
+          type="control_node.py"
+          launch-prefix="xterm -e"
+          output="screen" />
+
+    <!-- ===== NODO RESULTADO (suscriptor + cliente servicio user_score) ===== -->
+    <node name="result_game"
+          pkg="rp_Cristino_Garcia_Sanchez_25"
+          type="result_game.py"
+          launch-prefix="xterm -e"
+          output="screen" />
+</launch>
+
