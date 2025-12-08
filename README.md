@@ -11,6 +11,7 @@ All ROS-related work is located in the **ROS** branch of this repository.
 This repository contains three main components:  
 the **main branch**, the **ROS branch**, and the **GAME branch**.
 
+```md
 
 main/
  └── README.md                 ← General project description
@@ -36,4 +37,12 @@ ROS/
 GAME/
  ├── game.py                   ← Stand-alone Python/Pygame version of Flappy Bird
  └── README.md                 ← Documentation for the non-ROS version
+
+
+```
+## Authors
+
+- **Ana Cristino Prieto**
+- **Andrea García Ruiz**
+- **Paula Sánchez Sanz**
 
