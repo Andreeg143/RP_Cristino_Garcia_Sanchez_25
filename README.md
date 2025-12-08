@@ -7,24 +7,33 @@ The project consists of implementing a complete, modular Flappy Bird game using 
 All ROS-related work is located in the **ROS** branch of this repository.
 
 ## 📁 Repository Structure
+
+This repository contains three main components:  
+the **main branch**, the **ROS branch**, and the **GAME branch**.
+
+
 main/
- ├── README.md           ← You are here
- 
+ └── README.md                 ← General project description
 
-ROS branch:
- ├── game_node.py
- ├── control_node.py
- ├── info_user.py
- ├── result_game.py
+ROS/
+ ├── game_node.py              ← Main ROS + Pygame game logic
+ ├── control_node.py           ← Keyboard control (SPACE / R)
+ ├── info_user.py              ← User information input (name, username, age)
+ ├── result_game.py            ← Final score + percentage display (service client)
+ │
  ├── srv/
+ │    ├── GetUserScore.srv     ← Returns a player's score percentage
+ │    └── SetGameDifficulty.srv← Changes game difficulty (easy/medium/hard)
+ │
  ├── msg/
+ │    └── user_msg.msg         ← Custom message for sending user info
+ │
  ├── launch/
- └── README.md           ← Full ROS documentation
-
-GAME branch:
- ├── game_node.py
- ├── control_node.py
- ├── info_user.py
- ├── result_game.py
- └── README.md           ← Full GAME python documentation
+ │    └── flappy_bird_game.launch ← Launches all ROS nodes (xterm windows included)
+ │
+ └── README.md                 ← Full ROS code documentation
+ 
+GAME/
+ ├── game.py                   ← Stand-alone Python/Pygame version of Flappy Bird
+ └── README.md                 ← Documentation for the non-ROS version
 
