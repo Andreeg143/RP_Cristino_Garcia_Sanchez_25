@@ -159,7 +159,7 @@ Publishes to:
 
 **Type**: Keyboard Controller
 
-Publishes keyboard commands to the game:
+**Publishes keyboard commands to the game**:
 | Key            | Action                    |
 |----------------|----------------------------|
 | **SPACE**      | Jump / Start / Continue   |
@@ -172,7 +172,7 @@ Publishes keyboard commands to the game:
 | `/keyboard_control` | `std_msgs/String` |
 
 
-### 4️ result_game.py
+### 4 result_game.py
 
 **Type**: Subscriber + Service Client
 
@@ -224,7 +224,7 @@ float32 percentage
 rosservice call /user_score "username: 'pepe'"
 ``` 
 
-Returns:
+**Returns**:
 
 ```ini
 percentage = (user_best_score / global_best_score) * 100
