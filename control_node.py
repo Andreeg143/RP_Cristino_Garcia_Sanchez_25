@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-#AUTHORS: 
-#ANA CRISTINO PRIETO
-#ANDREA GARCIA RUIZ
-#PAULA SANCHEZ SANZ
 
-#control_node.py -> publisher in game_node
-#control_node.py -> topic -> keyboard_control
-#info_user.py -> msg_type -> std_msgs/String
-#Belongs to phase 2
+# AUTHORS: 
+# ANA CRISTINO PRIETO
+# ANDREA GARCIA RUIZ
+# PAULA SANCHEZ SANZ
+
+# control_node.py -> publisher in game_node
+# control_node.py -> topic -> keyboard_control
+# info_user.py -> msg_type -> std_msgs/String
+# Belongs to phase 2
 
 import rospy
 import time
