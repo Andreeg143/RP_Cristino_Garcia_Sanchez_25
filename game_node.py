@@ -1,16 +1,16 @@
 #! /usr/bin/env python3
 
-#AUTHORS: 
-#ANA CRISTINO PRIETO
-#ANDREA GARCIA RUIZ
-#PAULA SANCHEZ SANZ
+# AUTHORS: 
+# ANA CRISTINO PRIETO
+# ANDREA GARCIA RUIZ
+# PAULA SANCHEZ SANZ
 
-#Fase 1: welcome -> suscriber of info_user through topic user_information and print the info
-#Fase 2: game -> control of the game,  
+# Fase 1: welcome -> suscriber of info_user through topic user_information and print the info
+# Fase 2: game -> control of the game,  
 #               suscriber to control_node 
 #               topic keyboard_control
 #               mensaje std_msgs/String -> Right, left, up, down ALL CAPITAL LETTERS and SPACE key
-#Fase 3: final -> final score
+# Fase 3: final -> final score
 #                 publisher result_game
 #                 topic result_information
 #                 message std_msgs/int64
