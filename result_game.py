@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
+# AUTHORS
 # ANA CRISTINO PRIETO
 # ANDREA GARCIA RUIZ
 # PAULA SANCHEZ SANZ
 
-#result_game.py -> suscriber of game_node -> topic -> result_information
-#result_game.py -> suscriber of info_user -> topic -> user_information
-#result_game.py -> msg_type -> std_msgs/int64 and user_msg
-#prints username and score
-#Belongs to phase 2
+# result_game.py -> suscriber of game_node -> topic -> result_information
+# result_game.py -> suscriber of info_user -> topic -> user_information
+# result_game.py -> msg_type -> std_msgs/int64 and user_msg
+# prints username and score
+# Belongs to phase 2
 
 import rospy
 import time
