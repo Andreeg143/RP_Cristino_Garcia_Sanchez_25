@@ -36,37 +36,38 @@ Start the whole game with one command
 ´´´bash
 roslaunch rp_Cristino_Garcia_Sanchez_25 flappy_bird_game.launch
 ´´´
+
 ---
 ## Node by Node Execution
 **Terminal 1**
 
-´´´bash
-roscore
-´´´
+```bash
+  roscore
+```
 
 **Terminal 2**
 
-´´´bash
+```bash
 rosrun rp_Cristino_Garcia_Sanchez_25 game_node.py
-´´´
+```
 
 **Terminal 3**
 
-´´´bash
+```bash
 rosrun rp_Cristino_Garcia_Sanchez_25 info_user.py
-´´´
+```
 
 **Terminal 4**
 
-´´´bash
+```bash
 rosrun rp_Cristino_Garcia_Sanchez_25 control_node.py
-´´´
+```
 
 **Terminal 5**
 
-´´´bash
+```bash
 rosrun rp_Cristino_Garcia_Sanchez_25 result_game.py
-´´´
+```
 
 ---
 ## Game Controls
@@ -195,39 +196,39 @@ Publishes keyboard commands to the game:
 ## Services
 ### 1 SetGameDifficulty.srv
 
-´´´ srv
+``` srv
 SetGameDifficulty.srv
 string level
 
 bool success
-´´´
+```
 
 **Usage**:
 
-´´´bash
+```bash
 rosservice call /difficulty "level: 'easy'"
-´´´
+```
 
 **IMPORTANT** Works only during Phase 1 (Welcome Screen).
 
 ### 2 GetUserScore.srv
 
-´´´srv
+```srv
 string username
 
 float32 percentage
-´´´
+```
 
 **Usage:**
-´´´bash
+```bash
 rosservice call /user_score "username: 'pepe'"
-´´´ 
+``` 
 
 Returns:
 
-´´´ini
+```ini
 percentage = (user_best_score / global_best_score) * 100
-´´´
+```
 
 ## Parameters
 
@@ -235,23 +236,23 @@ Modify parameters while running the game.
 
 **Bird Colors**
 
-´´´bash
+```bash
 rosparam set /change_player_color 1   # Red
 rosparam set /change_player_color 2   # Purple
 rosparam set /change_player_color 3   # Blue
-´´´
+```
 
 **Check User Name**
 
-´´´bash
+```bash
 rosparam get /user_name
-´´´
+```
 
 **Check phase of the game**
 
-´´´bash
+```bash
 rosparam get /screen_param
-´´´
+```
 
 ---
 
