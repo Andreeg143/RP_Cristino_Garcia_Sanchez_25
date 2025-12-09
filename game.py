@@ -1,3 +1,8 @@
+#AUTHORS:
+#ANA CRISTINO PRIETO
+#ANDREA GARCIA RUIZ
+#PAULA SANCHEZ SANZ
+
 import pygame
 import sys
 import random
@@ -19,9 +24,9 @@ JUMP_STRENGTH = -6
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BLUE = (135, 206, 235)  # Sky blue
-GREEN = (34, 139, 34)   # Forest green
-PURPLE = (128, 0, 128)  # Bird color
+BLUE = (135, 206, 235) 
+GREEN = (34, 139, 34)  
+PURPLE = (128, 0, 128) 
 RED = (255, 0, 0)
 ORANGE = (255, 165, 0)
 
