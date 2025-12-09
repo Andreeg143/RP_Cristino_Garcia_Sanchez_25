@@ -26,7 +26,7 @@ ROS/
  │    ├── GetUserScore.srv     ← Returns a player's score percentage
  │    └── SetGameDifficulty.srv← Changes game difficulty (easy/medium/hard)
  │
- ├── msg/
+ ├── flappy_info_msgs/
  │    └── user_msg.msg         ← Custom message for sending user info
  │
  ├── launch/
