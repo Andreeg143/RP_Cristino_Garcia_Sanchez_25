@@ -6,14 +6,14 @@
 #PAULA SANCHEZ SANZ
 
 #Fase 1: welcome -> suscriber of info_user through topic user_information and print the info
-#Fase 2: game -> control of the game, flechitas, 
-#               suscriber de node control_node 
+#Fase 2: game -> control of the game,  
+#               suscriber to control_node 
 #               topic keyboard_control
-#               mensaje std_msgs/String -> Right, left, up, down ALL CAPITAL LETTERS, usamos space
+#               mensaje std_msgs/String -> Right, left, up, down ALL CAPITAL LETTERS and SPACE key
 #Fase 3: final -> final score
 #                 publisher result_game
 #                 topic result_information
-#                 mensaje std_msgs/int64
+#                 message std_msgs/int64
 
 
 import rospy
@@ -49,13 +49,13 @@ JUMP_STRENGTH = -6
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BLUE = (135, 206, 235)  # Sky blue
-GREEN = (34, 139, 34)   # Forest green
-PURPLE = (128, 0, 128)  # Bird color
+BLUE = (135, 206, 235) 
+GREEN = (34, 139, 34)   
+PURPLE = (128, 0, 128)  
 RED = (255, 0, 0)
 ORANGE = (255, 165, 0)
 
-# Color actual del pájaro (se actualizará con el parámetro change_player_color)
+# Actuals birds color (it will be updated with change_player_color parameter)
 BIRD_COLOR = PURPLE
 
 
@@ -64,7 +64,7 @@ class GameState(Enum):
     PLAYING = 1
     GAME_OVER = 2
 
-#this is pygame
+# pygame part
 
 class Bird:
     def __init__(self):
@@ -183,7 +183,7 @@ class FlappyBirdGame:
         self.pipe_timer = 0
         self.pipe_spawn_delay = 90  # frames between pipes
 
-        # ----- DIFFICULTY (for SetGameDifficulty service) -----
+        # Difficulty (for SetGameDifficulty service) 
         self.difficulty = "medium"           # "easy" / "medium" / "hard"
         self.base_gap = PIPE_GAP             # starting gap between pipes
         self.base_spawn_delay = self.pipe_spawn_delay  # starting spawn delay
@@ -191,19 +191,19 @@ class FlappyBirdGame:
 
     def set_difficulty(self, level: str):
         """
-        Ajusta la dificultad base del juego.
-        EASY  -> tuberías más separadas, menos frecuentes
-        HARD  -> tuberías más juntas, más frecuentes
+        Adjusts base difficulty of the game,
+        EASY  -> more separed pipes and less often
+        HARD -> pipes more together and more often
         """
         level = level.lower()
         if level == "easy":
             self.difficulty = "easy"
-            self.base_gap = PIPE_GAP + 40      # más separación
-            self.base_spawn_delay = 110        # salen menos a menudo
+            self.base_gap = PIPE_GAP + 40      # more separation
+            self.base_spawn_delay = 110        # less often
         elif level == "hard":
             self.difficulty = "hard"
-            self.base_gap = PIPE_GAP - 20      # menos separación
-            self.base_spawn_delay = 70         # salen más a menudo
+            self.base_gap = PIPE_GAP - 20      # less separation
+            self.base_spawn_delay = 70         # more often
         else:
             self.difficulty = "medium"
             self.base_gap = PIPE_GAP
@@ -211,7 +211,7 @@ class FlappyBirdGame:
 
         rospy.loginfo("[SERVICE difficulty] Game difficulty set to %s", self.difficulty)
 
-        
+    # Before having control_node, we handled events using this method    
     """
     def handle_events(self):
         for event in pygame.event.get():
@@ -417,6 +417,8 @@ class FlappyBirdGame:
             self.screen.blit(restart_text, restart_rect)
         
         pygame.display.flip()
+
+    # We used to run the game like this when it was only the game.
     """
     def run(self):
         running = True
@@ -449,28 +451,28 @@ class Game(object):
         self.__pub_result = rospy.Publisher("result_information", Int64, queue_size=10)
         self.result_published = False
 
-        # ---- TABLE FOR SCORES (for user_score service) ----
+        # Table for scores (for user_score service) 
         self.user_scores = {}   # dict: username -> last score
         self.max_score = 0      # highest score seen so far
 
-        # ---- SERVICES ----
+        # Services
         self.user_score_srv = rospy.Service("user_score", GetUserScore, self.handle_get_user_score)
         self.difficulty_srv = rospy.Service("difficulty", SetGameDifficulty, self.handle_set_difficulty)
         
-        # ---------- PARAMS INICIALIZACIÓN ----------
-        # user_name: guarda el nombre del usuario actual
+        # Params initialization
+        # user_name:saves actual user name
         rospy.set_param('user_name', 'None')
 
         # change_player_color: 1=Red, 2=Purple, 3=Blue
-        rospy.set_param('change_player_color', 2)  # por defecto morado
+        rospy.set_param('change_player_color', 2)  # Default: purple
 
-        # screen_param: indica la fase del juego (phase1, phase2, phase3)
+        # screen_param: indicates phase game (phase1, phase2, phase3)
         rospy.set_param('screen_param', 'phase1')
 
 
         rospy.loginfo("Starting the game")
         time.sleep(5)
-        #self.main()
+        
 
         #create instance to game
         self.game = FlappyBirdGame()
@@ -484,7 +486,7 @@ class Game(object):
         rospy.loginfo("Name: %s", msg.name)
         rospy.loginfo("Username: %s", msg.username)
         rospy.loginfo("Age: %d", msg.age)
-        # actualizar parámetro user_name
+        # update user_name param
         rospy.set_param('user_name', self.username)
 
     def callback_control(self, msg):
@@ -495,18 +497,17 @@ class Game(object):
             self.jump_requested = True
 
         elif msg.data == "R":
-            # R -> volver a fase 1 (reset total)
+            # R -> get back to phase one
             self.reset_requested = True
 
-    # --------- SERVICE HANDLERS ---------
+    # Service handles
     def handle_get_user_score(self, req):
         """
         Service: user_score (GetUserScore)
         Request: username (string)
         Response: percentage (float32)
 
-        Definimos percentage como el % de su mejor puntuación
-        respecto al máximo de todos los usuarios.
+        Define percentage as the % of all users best score
         """
         username = req.username
         if username in self.user_scores and self.max_score > 0:
@@ -520,8 +521,8 @@ class Game(object):
     def handle_set_difficulty(self, req):
         """
         Service: difficulty (SetGameDifficulty)
-        Solo permite cambiar la dificultad si el juego
-        está en la pantalla de inicio (START_SCREEN).
+        It only allows to change difficulty if the game 
+        is in the initial screen (START_SCREEN).
         """
         level = req.level.lower()
         if level not in ("easy", "medium", "hard"):
@@ -538,7 +539,7 @@ class Game(object):
 
     def update_player_color_from_param(self):
         """
-        Lee el parámetro change_player_color y actualiza el color global del pájaro.
+        Reads change_player_color parameter and updates birds color
         1 -> RED, 2 -> PURPLE, 3 -> BLUE
         """
         global BIRD_COLOR
@@ -564,46 +565,46 @@ class Game(object):
             # Eventos de Pygame (cerrar ventana)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    rospy.loginfo("Ventana cerrada, saliendo...")
+                    rospy.loginfo("Closed window, exiting...")
                     running = False
 
-            # -------- RESET A FASE 1 (tecla R) --------
+            # Reset to phase 1 (key R)
             if self.reset_requested:
-                rospy.loginfo("[RESET] Volviendo a FASE 1 (START_SCREEN).")
-                rospy.loginfo("[RESET] Borrando datos de usuario. Ejecuta info_user de nuevo para nuevo jugador.")
+                rospy.loginfo("[RESET] Going back to Phase 1 (START_SCREEN).")
+                rospy.loginfo("[RESET] Deleting user data. Executing info_user again for a new user.")
 
-                # Nueva instancia del juego -> vuelve a START_SCREEN, score=0, pipes vacíos, etc.
+                # New instance of the game -> goes back to START_SCREEN, score=0,  empty pipes, etc.
                 self.game = FlappyBirdGame()
 
-                # Reset flags de resultado
+                # Reset flags of results
                 self.result_published = False
                 
                 """
-                # Reset info de usuario (fase 1)
+                # Reset users info (phase 1)
                 self.name = "None"
                 self.username = "None"
                 self.age = 0
                 """
                 
-                # Consumimos el reset
+                
                 self.reset_requested = False
 
                 rospy.loginfo("Run again the node info_user")
-            # -------- END RESET A FASE 1 --------
+            # End reset to phase 1
 
-            #phase 2
+            #Phase 2
             if self.jump_requested:
                 if self.game.game_state == GameState.START_SCREEN:
-                    rospy.loginfo("[FASE 2] %s inicia la partida", self.username)
+                    rospy.loginfo("[Phase 2] %s starts the game", self.username)
                     self.game.start_game()
                     self.result_published = False
 
                 elif self.game.game_state == GameState.PLAYING:
-                    rospy.loginfo("[FASE 2] %s hace jump", self.username)
+                    rospy.loginfo("[Phase 2] %s jump", self.username)
                     self.game.bird.jump()
 
                 elif self.game.game_state == GameState.GAME_OVER:
-                    rospy.loginfo("[FASE 2] %s reinicia la partida", self.username)
+                    rospy.loginfo("[Phase 2] %s restarts game", self.username)
                     self.game.restart_game()
                     self.result_published = False
 
@@ -611,7 +612,7 @@ class Game(object):
 
             prev_state = self.game.game_state
 
-            # ---------- PARAM: screen_param ----------
+            # PARAM: screen_param 
             if self.game.game_state == GameState.START_SCREEN:
                 rospy.set_param('screen_param', 'phase1')
             elif self.game.game_state == GameState.PLAYING:
@@ -629,7 +630,7 @@ class Game(object):
             self.game.game_state == GameState.GAME_OVER and
             not self.result_published):
 
-            # Actualizamos tabla de scores para el servicio user_score
+            # Update scores table for user_score service
                 self.user_scores[self.username] = self.game.score
                 if self.game.score > self.max_score:
                     self.max_score = self.game.score
@@ -637,7 +638,7 @@ class Game(object):
                 score_msg = Int64()
                 score_msg.data = self.game.score
                 self.__pub_result.publish(score_msg)
-                rospy.loginfo("[FASE 3] Publicando score final de %s: %d", self.username, self.game.score)
+                rospy.loginfo("[Phase 3] Publishing final score of %s: %d", self.username, self.game.score)
                 self.result_published = True
 
             
@@ -650,7 +651,7 @@ class Game(object):
 
 if __name__ == "__main__":
     try:
-        rospy.init_node("game_node")#preguntar que poner aqui
+        rospy.init_node("game_node")
         rospy.loginfo("Node game has started")
         node = Game()
         #rospy.spin()
