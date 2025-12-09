@@ -1,7 +1,12 @@
 #! /usr/bin/env python3
 
-#Fase 1: welcome -> suscriber de info user con topic user_information y print the info
-#Fase 2: game -> control del juego, flechitas, 
+#AUTHORS: 
+#ANA CRISTINO PRIETO
+#ANDREA GARCIA RUIZ
+#PAULA SANCHEZ SANZ
+
+#Fase 1: welcome -> suscriber of info_user through topic user_information and print the info
+#Fase 2: game -> control of the game, flechitas, 
 #               suscriber de node control_node 
 #               topic keyboard_control
 #               mensaje std_msgs/String -> Right, left, up, down ALL CAPITAL LETTERS, usamos space
