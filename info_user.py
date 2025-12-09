@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+# AUTHORS: 
 # ANA CRISTINO PRIETO
 # ANDREA GARCIA RUIZ
 # PAULA SANCHEZ SANZ
