@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-#control_node.py -> publisher del game_node
+#AUTHORS: 
+#ANA CRISTINO PRIETO
+#ANDREA GARCIA RUIZ
+#PAULA SANCHEZ SANZ
+
+#control_node.py -> publisher in game_node
 #control_node.py -> topic -> keyboard_control
 #info_user.py -> msg_type -> std_msgs/String
 #Belongs to phase 2
@@ -26,7 +31,7 @@ class ControlNodePub(object):
         if rlist:
             key = sys.stdin.read(1)
 
-        # Restaurar configuración del terminal
+        # Restore configuration of the terminal
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
         return key
 
@@ -37,19 +42,19 @@ class ControlNodePub(object):
         while not rospy.is_shutdown():
             key = self.get_key()
 
-            # if CTRL+C is pressed, salimos del bucle
+            # if CTRL+C is pressed, get out of the loop
             if key == '\x03':
                 rospy.loginfo("CTRL+C detected, exiting keyboard control loop.")
                 break
 
-            # Si se pulsa SPACE, publicamos en el topic
+            # If SPACE key is pressed, topic is published
             if key == ' ':
                 msg = String()
-                msg.data = "SPACE"   # TODO: si más adelante hay más controles, cambiar aquí
+                msg.data = "SPACE"  
                 self.__pub.publish(msg)
                 rospy.loginfo("Published key: %s", msg.data)
 
-            # R -> reset completo a fase 1
+            # R -> complete reset of phase 1
             elif key in ('r', 'R'):
                 msg = String()
                 msg.data = "R"
@@ -72,5 +77,5 @@ if __name__ == "__main__":
     except rospy.ROSInterruptException:
         pass
     finally:
-        # Restaurar siempre el terminal por si acaso
+        # To always restore the terminal
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
