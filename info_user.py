@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-# info_user.py -> publisher de la info del usuario
+
+# ANA CRISTINO PRIETO
+# ANDREA GARCIA RUIZ
+# PAULA SANCHEZ SANZ
+
+# info_user.py -> publisher of info_user
 # info_user.py -> topic -> user_information
 # info_user.py -> msg_type -> user_msg
 # Belongs to phase 1
@@ -9,9 +14,6 @@ import time
 
 from std_msgs.msg import String
 from flappy_info_msgs.msg import user_msg  # -> msg_type
-# mirar el msg_type en el package.xml y preguntar a sara, al hacer catkin_make
-# nos da error porque tenemos dos carpetas de tipo de mensaje
-
 
 class InfoUserPub(object):
     def __init__(self):
@@ -36,7 +38,7 @@ class InfoUserPub(object):
         user.name = name
         user.username = username
 
-        # convertir edad
+        # convert to age (int)
         try:
             user.age = int(age)
         except ValueError:
