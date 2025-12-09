@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-#result_game.py -> suscriber del game_node -> topic -> result_information
-#result_game.py -> suscriber del info_user -> topic -> user_information
-#result_game.py -> msg_type -> std_msgs/int64 y user_msg
-#imprime username and score
+
+# ANA CRISTINO PRIETO
+# ANDREA GARCIA RUIZ
+# PAULA SANCHEZ SANZ
+
+#result_game.py -> suscriber of game_node -> topic -> result_information
+#result_game.py -> suscriber of info_user -> topic -> user_information
+#result_game.py -> msg_type -> std_msgs/int64 and user_msg
+#prints username and score
 #Belongs to phase 2
 
 import rospy
 import time
 from std_msgs.msg import Int64
 from flappy_info_msgs.msg import user_msg   #-> msg_type
-from rp_Cristino_Garcia_Sanchez_25.srv import GetUserScore   # ajusta el nombre del paquete si hace falta
+from rp_Cristino_Garcia_Sanchez_25.srv import GetUserScore  
 
 
 class ResultGameSub(object):
@@ -30,7 +35,7 @@ class ResultGameSub(object):
 
     def callback_game(self, msg):
         self.score = msg.data
-        self.result_printed = False  # hay nuevo resultado, se puede volver a imprimir
+        self.result_printed = False  
         rospy.loginfo("Received message - score game: %d", msg.data) 
         self.print_result()
 
@@ -44,11 +49,11 @@ class ResultGameSub(object):
         self.print_result()
     
     def print_result(self):
+        # If we have all the information needed, it is printed
         if self.result_printed:
-            return  # ya hemos impreso este resultado
-
+            return  
+        # If there is missing information, it does not print
         if self.score is None or self.username is None:
-            # todavía falta información
             return
 
         try:
@@ -77,7 +82,7 @@ class ResultGameSub(object):
 
 if __name__ == "__main__":
     try:
-        rospy.init_node("result_game")#preguntar que poner aqui
+        rospy.init_node("result_game")
         rospy.loginfo("Node result game has started")
         robot = ResultGameSub()
         rospy.spin()
